@@ -33,6 +33,8 @@ export function KanbanBoard({
     () => db.tasks.where('workspaceId').equals(workspaceId).toArray(),
     [workspaceId]
   );
+  
+  console.log('KanbanBoard allTasks:', allTasks?.map(t => ({ id: t.id, title: t.title, parent: t.parentTaskId, workspaceId: t.workspaceId })));
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
@@ -108,6 +110,19 @@ export function KanbanBoard({
                           </div>
                           {task.description && <p className="task-desc">{task.description}</p>}
                           
+                          {task.links?.filter(l => l.isPinned).map((link, idx) => (
+                            <a 
+                              key={`link-${idx}`} 
+                              href={link.url} 
+                              target="_blank" 
+                              rel="noreferrer" 
+                              className="task-card-pinned-link"
+                              onClick={(e) => e.stopPropagation()} // Prevent opening task detail when clicking link
+                            >
+                              🔗 {link.title || link.url}
+                            </a>
+                          ))}
+
                           {task.tags && task.tags.length > 0 && (
                             <div className="task-card-tags">
                               {task.tags.map((tag, i) => (

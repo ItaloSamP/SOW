@@ -3,15 +3,49 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Task } from '@/db/dexie';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Pin, PinOff } from 'lucide-react';
 import { TaskDetailPanel } from '@/components/tasks/TaskDetailPanel';
 import './OverviewPage.css';
 
 export default function Home() {
   const allTasks = useLiveQuery(() => db.tasks.toArray());
+  const workspaces = useLiveQuery(() => db.workspaces.toArray());
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Script de auto-reparo para subtarefas órfãs (rodado apenas uma vez ao montar)
+  useEffect(() => {
+    const fixStrandedSubtasks = async () => {
+      try {
+        const tasks = await db.tasks.toArray();
+        const parents = new Map(tasks.map(t => [t.id, t]));
+        
+        for (const task of tasks) {
+          if (task.parentTaskId) {
+            const parent = parents.get(task.parentTaskId);
+            if (parent && parent.workspaceId !== task.workspaceId) {
+              await db.tasks.update(task.id!, { workspaceId: parent.workspaceId });
+              console.log(`Fixed orphaned subtask ${task.id} to workspace ${parent.workspaceId}`);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error fixing subtasks', err);
+      }
+    };
+    fixStrandedSubtasks();
+  }, []);
+
+  const getWorkspaceName = (wsId: string) => {
+    if (wsId === 'general') return 'General';
+    const numId = parseInt(wsId, 10);
+    if (!isNaN(numId)) {
+      const ws = workspaces?.find(w => w.id === numId);
+      return ws ? ws.name : wsId;
+    }
+    return wsId;
+  };
 
   const handleCreateTask = async () => {
     try {
@@ -61,6 +95,10 @@ export default function Home() {
   const pinnedTasks = sortedTasks?.filter(t => t.isPinned) || [];
   const regularTasks = sortedTasks?.filter(t => !t.isPinned) || [];
 
+  const getSubtasks = (parentId: number) => {
+    return allTasks?.filter(t => t.parentTaskId === parentId) || [];
+  };
+
   // Agrupamento por ambiente
   const tasksByWorkspace = regularTasks.reduce((acc, task) => {
     const ws = task.workspaceId;
@@ -92,13 +130,27 @@ export default function Home() {
           )}
         </div>
         {task.description && <p className="row-desc">{task.description}</p>}
+        
+        {task.links?.filter(l => l.isPinned).map((link, idx) => (
+          <a 
+            key={`link-${idx}`} 
+            href={link.url} 
+            target="_blank" 
+            rel="noreferrer" 
+            className="task-card-pinned-link"
+            onClick={(e) => e.stopPropagation()}
+            style={{ marginTop: '0.25rem', width: 'fit-content' }}
+          >
+            🔗 {link.title || link.url}
+          </a>
+        ))}
       </div>
 
       <div className="row-meta">
         {task.dueDate && (
           <span className="row-date"><Calendar size={14} /> {task.dueDate}</span>
         )}
-        <span className="workspace-badge">{task.workspaceId}</span>
+        <span className="workspace-badge">{getWorkspaceName(task.workspaceId)}</span>
         <span className={`status-badge ${task.status}`}>{task.status}</span>
       </div>
 
@@ -132,6 +184,27 @@ export default function Home() {
           >
             X
           </button>
+        )}
+      </div>
+
+      <div className="task-hover-popover">
+        <h4 className="popover-title">{task.title}</h4>
+        <p className="popover-desc">{task.description || 'No description.'}</p>
+        
+        {getSubtasks(task.id!).length > 0 && (
+          <div className="popover-subtasks">
+            <span className="popover-subtitle">Subtasks:</span>
+            {getSubtasks(task.id!).map(sub => (
+              <div 
+                key={sub.id} 
+                className="popover-subtask-item"
+                onClick={(e) => { e.stopPropagation(); setSelectedTaskId(sub.id!); }}
+              >
+                <span className={`status-dot ${sub.status}`}></span>
+                {sub.title}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -180,7 +253,7 @@ export default function Home() {
               Object.keys(tasksByWorkspace).map(ws => (
                 <div key={ws} className="workspace-group">
                   <h2 className="section-title workspace-group-title">
-                    Workspace: <span className="highlight-ws">{ws}</span>
+                    Workspace: <span className="highlight-ws">{getWorkspaceName(ws)}</span>
                   </h2>
                   <div className="tasks-grid">
                     {tasksByWorkspace[ws].map(renderTaskCard)}

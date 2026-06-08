@@ -115,6 +115,36 @@
 .status-dot.blocked { background: var(--danger); }
 .status-dot.done { background: var(--success); }
 
+.task-card-tag {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.task-card-pinned-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  background-color: rgba(0, 229, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.task-card-pinned-link:hover {
+  background-color: rgba(0, 229, 255, 0.2);
+  text-decoration: underline;
+}
+
 .task-count {
   background-color: var(--bg-tertiary);
   color: var(--text-secondary);

@@ -333,3 +333,103 @@
   border-radius: 12px;
   border: 1px solid var(--border-color);
 }
+
+.task-card-pinned-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  background-color: rgba(0, 229, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.task-card-pinned-link:hover {
+  background-color: rgba(0, 229, 255, 0.2);
+  text-decoration: underline;
+}
+
+/* Hover Card Popover (Overview) */
+.task-hover-popover {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  width: 250px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.overview-task-row {
+  position: relative;
+}
+
+.overview-task-row:hover .task-hover-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(4px);
+  pointer-events: auto;
+}
+
+.popover-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.popover-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popover-subtitle {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.popover-subtasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.popover-subtask-item {
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.popover-subtask-item:hover {
+  filter: brightness(1.2);
+}

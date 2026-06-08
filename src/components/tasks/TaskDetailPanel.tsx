@@ -43,6 +43,16 @@ export function TaskDetailPanel({
   const handleUpdate = async (updates: Partial<Task>) => {
     try {
       await db.tasks.update(taskId, updates);
+      
+      // Se mudamos de workspace, precisamos mover todas as subtarefas dessa task para o novo workspace também
+      if (updates.workspaceId !== undefined) {
+        const subtasks = await db.tasks.where('parentTaskId').equals(taskId).toArray();
+        for (const sub of subtasks) {
+          if (sub.id) {
+            await db.tasks.update(sub.id, { workspaceId: updates.workspaceId });
+          }
+        }
+      }
     } catch (error) {
       console.error('Error updating task', error);
     }
@@ -260,6 +270,68 @@ export function TaskDetailPanel({
               value={newSubtask}
               onChange={(e) => setNewSubtask(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addSubtask()}
+            />
+          </div>
+        </div>
+
+        <div className="task-section links-section">
+          <h3>Attached Links</h3>
+          <div className="links-list">
+            {(task.links || []).map((link, idx) => (
+              <div key={idx} className={`link-item ${link.isPinned ? 'pinned' : ''}`}>
+                <a href={link.url} target="_blank" rel="noreferrer" className="link-title">{link.title || link.url}</a>
+                <div className="link-actions">
+                  <button 
+                    onClick={async () => {
+                      const updatedLinks = (task.links || []).map((l, i) => ({
+                        ...l,
+                        isPinned: i === idx ? !l.isPinned : false // Only one pinned at a time
+                      }));
+                      await handleUpdate({ links: updatedLinks });
+                    }} 
+                    title={link.isPinned ? "Unpin Link" : "Pin Link"}
+                    className={`pin-btn ${link.isPinned ? 'active' : ''}`}
+                  >
+                    {link.isPinned ? '★' : '☆'}
+                  </button>
+                  <button 
+                    onClick={async () => {
+                      const updatedLinks = (task.links || []).filter((_, i) => i !== idx);
+                      await handleUpdate({ links: updatedLinks });
+                    }} 
+                    title="Delete Link"
+                    className="delete-link-btn"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="link-input-wrapper" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+            <input 
+              style={{ flex: 1, padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
+              type="text" 
+              placeholder="Title..."
+              id="new-link-title"
+            />
+            <input 
+              style={{ flex: 2, padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
+              type="text" 
+              placeholder="https://..."
+              id="new-link-url"
+              onKeyDown={async (e) => {
+                if (e.key === 'Enter') {
+                  const titleEl = document.getElementById('new-link-title') as HTMLInputElement;
+                  const urlEl = document.getElementById('new-link-url') as HTMLInputElement;
+                  if (urlEl.value) {
+                    const newLink = { title: titleEl.value, url: urlEl.value, isPinned: false };
+                    await handleUpdate({ links: [...(task.links || []), newLink] });
+                    titleEl.value = '';
+                    urlEl.value = '';
+                  }
+                }
+              }}
             />
           </div>
         </div>

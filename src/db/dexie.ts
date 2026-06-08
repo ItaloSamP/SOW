@@ -27,6 +27,7 @@ export interface Task {
   dueDate?: string; // Alterado para string para facilitar com input type="date"
   tags: string[];
   subtasks?: Array<{ id: string; title: string; completed: boolean }>;
+  links?: Array<{ title: string; url: string; isPinned: boolean }>;
   embedUrl?: string;
   pomodoroSessions: number;
   parentTaskId?: number;

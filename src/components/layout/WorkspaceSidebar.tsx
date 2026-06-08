@@ -3,6 +3,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/db/dexie';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Briefcase, GraduationCap, User, Plus, Settings, BarChart2 } from 'lucide-react';
 import { PomodoroTimer } from '@/components/productivity/PomodoroTimer';
@@ -11,6 +12,29 @@ import './WorkspaceSidebar.css';
 export function WorkspaceSidebar() {
   const pathname = usePathname();
   const workspaces = useLiveQuery(() => db.workspaces.toArray());
+
+  // Script de auto-reparo para subtarefas órfãs (rodado apenas uma vez ao montar)
+  useEffect(() => {
+    const fixStrandedSubtasks = async () => {
+      try {
+        const tasks = await db.tasks.toArray();
+        const parents = new Map(tasks.map(t => [t.id, t]));
+        
+        for (const task of tasks) {
+          if (task.parentTaskId) {
+            const parent = parents.get(task.parentTaskId);
+            if (parent && parent.workspaceId !== task.workspaceId) {
+              await db.tasks.update(task.id!, { workspaceId: parent.workspaceId });
+              console.log(`Fixed orphaned subtask ${task.id} to workspace ${parent.workspaceId}`);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error fixing subtasks', err);
+      }
+    };
+    fixStrandedSubtasks();
+  }, []);
 
   const getIcon = (type: string) => {
     switch (type) {
