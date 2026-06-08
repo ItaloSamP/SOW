@@ -1,0 +1,335 @@
+.overview-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.overview-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.overview-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.overview-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.overview-split-layout {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.overview-main-view {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-right: 0.5rem;
+}
+
+/* Os estilos .search-bar, .new-task-btn e .split-panel estão sendo reutilizados
+   do WorkspacePage.css, porém vamos garanti-los aqui caso o componente renderize sozinho */
+.split-panel {
+  flex: 0 0 450px;
+  max-width: 50%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar {
+  flex: 1;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar input:focus {
+  border-color: var(--accent-cyan);
+}
+
+.new-task-btn {
+  background-color: var(--accent-cyan);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.new-task-btn:hover {
+  filter: brightness(1.1);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.empty-state {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.tasks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.overview-task-row {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  gap: 1rem;
+}
+
+.overview-task-row:last-child {
+  border-bottom: none;
+}
+
+.overview-task-row:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.row-priority-indicator {
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  background-color: var(--text-muted);
+}
+.row-priority-indicator.priority-high { background-color: var(--danger); }
+.row-priority-indicator.priority-medium { background-color: var(--warning); }
+.row-priority-indicator.priority-low { background-color: var(--success); }
+
+.row-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow: hidden;
+}
+
+.row-title-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.row-title-area h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-tags {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.row-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.row-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.row-open-link {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--bg-tertiary);
+  color: var(--accent-cyan);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.row-open-link:hover {
+  background-color: var(--border-color);
+}
+
+.delete-quick-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.delete-quick-btn:hover {
+  color: var(--danger);
+}
+
+.pin-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0 0.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.pin-btn:hover {
+  color: var(--text-primary);
+}
+
+.pin-btn.active {
+  color: var(--accent-cyan);
+}
+
+.overview-task-row.pinned {
+  box-shadow: inset 2px 0 0 var(--accent-cyan);
+  background-color: var(--bg-tertiary);
+}
+
+.pinned-section {
+  margin-bottom: 2rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+}
+
+.workspace-group {
+  margin-bottom: 2rem;
+}
+
+.workspace-group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+}
+
+.workspace-badge {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.date-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.go-to-workspace {
+  margin-top: 0.5rem;
+  text-align: center;
+  display: block;
+  padding: 0.5rem;
+  background-color: var(--bg-tertiary);
+  color: var(--accent-cyan);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.go-to-workspace:hover {
+  text-decoration: underline;
+  background-color: var(--bg-elevated);
+}
+
+.task-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.task-card-tag {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
