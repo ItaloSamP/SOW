@@ -6,6 +6,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { KanbanBoard } from '@/components/tasks/KanbanBoard';
 import { CalendarView } from '@/components/tasks/CalendarView';
 import { TaskDetailPanel } from '@/components/tasks/TaskDetailPanel';
+import { QuickAddTask } from '@/components/tasks/QuickAddTask';
 import { db } from '@/db/dexie';
 import './WorkspacePage.css';
 
@@ -110,9 +111,9 @@ export default function WorkspacePage() {
 
       <div className="workspace-toolbar">
         <div className="search-bar">
-          <input 
-            type="text" 
-            placeholder="Search tasks..." 
+          <input
+            type="text"
+            placeholder="Search tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -121,6 +122,8 @@ export default function WorkspacePage() {
           + New Task
         </button>
       </div>
+
+      <QuickAddTask workspaceId={workspaceId} />
 
       <div className="workspace-content">
         <div className="main-view">

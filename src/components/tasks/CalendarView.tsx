@@ -37,11 +37,15 @@ export function CalendarView({
 
   if (!isBrowser) return null;
 
-  // Gerar um mês genérico de exemplo: Ano-Mês-Dia (Ex: 2026-06-01 até 2026-06-30)
-  const currentYear = new Date().getFullYear();
-  const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');
-  
-  const datesInMonth = Array.from({ length: 30 }, (_, i) => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonthIdx = now.getMonth();
+  const currentMonth = String(currentMonthIdx + 1).padStart(2, '0');
+  const daysInMonth = new Date(currentYear, currentMonthIdx + 1, 0).getDate();
+  // 0=Sun, 1=Mon, ... 6=Sat — number of empty cells before day 1
+  const firstDayOfWeek = new Date(currentYear, currentMonthIdx, 1).getDay();
+
+  const datesInMonth = Array.from({ length: daysInMonth }, (_, i) => {
     const day = String(i + 1).padStart(2, '0');
     return `${currentYear}-${currentMonth}-${day}`;
   });
@@ -74,8 +78,9 @@ export function CalendarView({
             <div key={d} className="calendar-header-day">{d}</div>
           ))}
           
-          <div className="calendar-day empty"></div>
-          <div className="calendar-day empty"></div>
+          {Array.from({ length: firstDayOfWeek }, (_, i) => (
+            <div key={`empty-${i}`} className="calendar-day empty"></div>
+          ))}
 
           {datesInMonth.map((dateStr) => {
             const dayTasks = getTasksForDate(dateStr);

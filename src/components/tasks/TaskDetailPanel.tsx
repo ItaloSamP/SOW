@@ -28,6 +28,8 @@ export function TaskDetailPanel({
   const [newSubtask, setNewSubtask] = useState('');
   const [tagsInput, setTagsInput] = useState('');
   const [embedInput, setEmbedInput] = useState('');
+  const [newLinkTitle, setNewLinkTitle] = useState('');
+  const [newLinkUrl, setNewLinkUrl] = useState('');
   
   useEffect(() => {
     if (task) {
@@ -309,27 +311,24 @@ export function TaskDetailPanel({
             ))}
           </div>
           <div className="link-input-wrapper" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-            <input 
+            <input
               style={{ flex: 1, padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
-              type="text" 
+              type="text"
               placeholder="Title..."
-              id="new-link-title"
+              value={newLinkTitle}
+              onChange={(e) => setNewLinkTitle(e.target.value)}
             />
-            <input 
+            <input
               style={{ flex: 2, padding: '0.4rem', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
-              type="text" 
+              type="text"
               placeholder="https://..."
-              id="new-link-url"
+              value={newLinkUrl}
+              onChange={(e) => setNewLinkUrl(e.target.value)}
               onKeyDown={async (e) => {
-                if (e.key === 'Enter') {
-                  const titleEl = document.getElementById('new-link-title') as HTMLInputElement;
-                  const urlEl = document.getElementById('new-link-url') as HTMLInputElement;
-                  if (urlEl.value) {
-                    const newLink = { title: titleEl.value, url: urlEl.value, isPinned: false };
-                    await handleUpdate({ links: [...(task.links || []), newLink] });
-                    titleEl.value = '';
-                    urlEl.value = '';
-                  }
+                if (e.key === 'Enter' && newLinkUrl) {
+                  await handleUpdate({ links: [...(task.links || []), { title: newLinkTitle, url: newLinkUrl, isPinned: false }] });
+                  setNewLinkTitle('');
+                  setNewLinkUrl('');
                 }
               }}
             />

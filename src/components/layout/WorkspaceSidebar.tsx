@@ -1,40 +1,32 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/db/dexie';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { useOrphanRepair } from '@/hooks/useOrphanRepair';
+import { db, type Workspace } from '@/db/dexie';
 import { LayoutDashboard, Briefcase, GraduationCap, User, Plus, Settings, BarChart2 } from 'lucide-react';
 import { PomodoroTimer } from '@/components/productivity/PomodoroTimer';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { WorkspaceModal } from '@/components/workspace/WorkspaceModal';
 import './WorkspaceSidebar.css';
 
 export function WorkspaceSidebar() {
   const pathname = usePathname();
   const workspaces = useLiveQuery(() => db.workspaces.toArray());
+  useOrphanRepair();
 
-  // Script de auto-reparo para subtarefas órfãs (rodado apenas uma vez ao montar)
-  useEffect(() => {
-    const fixStrandedSubtasks = async () => {
-      try {
-        const tasks = await db.tasks.toArray();
-        const parents = new Map(tasks.map(t => [t.id, t]));
-        
-        for (const task of tasks) {
-          if (task.parentTaskId) {
-            const parent = parents.get(task.parentTaskId);
-            if (parent && parent.workspaceId !== task.workspaceId) {
-              await db.tasks.update(task.id!, { workspaceId: parent.workspaceId });
-              console.log(`Fixed orphaned subtask ${task.id} to workspace ${parent.workspaceId}`);
-            }
-          }
-        }
-      } catch (err) {
-        console.error('Error fixing subtasks', err);
-      }
-    };
-    fixStrandedSubtasks();
-  }, []);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingWs, setEditingWs] = useState<Workspace | undefined>(undefined);
+
+  const openCreate = () => { setEditingWs(undefined); setModalOpen(true); };
+  const openEdit = (ws: Workspace, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEditingWs(ws);
+    setModalOpen(true);
+  };
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -46,74 +38,77 @@ export function WorkspaceSidebar() {
   };
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <div className="logo">
-          SOW
+    <>
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo">SOW</div>
         </div>
-      </div>
 
-      <nav className="sidebar-nav">
-        <Link 
-          href="/" 
-          className={`nav-item ${pathname === '/' ? 'active' : ''}`}
-        >
-          <LayoutDashboard size={18} />
-          <span>Overview</span>
-        </Link>
-        
-        <Link 
-          href="/stats" 
-          className={`nav-item ${pathname === '/stats' ? 'active' : ''}`}
-        >
-          <BarChart2 size={18} />
-          <span>Stats & Focus</span>
-        </Link>
+        <nav className="sidebar-nav">
+          <Link href="/" className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
+            <LayoutDashboard size={18} />
+            <span>Overview</span>
+          </Link>
 
-        <div className="nav-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>Workspaces</span>
-          <button 
-            className="add-btn" 
-            style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer' }} 
-            title="Create Workspace"
-            onClick={async () => {
-              const name = prompt('Workspace Name:');
-              if (name) {
-                await db.workspaces.add({
-                  name,
-                  type: 'studies',
-                  icon: 'folder',
-                  themeColor: '#00E5FF',
-                  quickLinks: []
-                });
-              }
-            }}
-          >
-            <Plus size={14} />
-          </button>
-        </div>
-          
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {workspaces?.map(ws => (
-            <Link 
-              key={ws.id} 
-              href={`/workspace/${ws.id}`}
-              className={`nav-item ${pathname === `/workspace/${ws.id}` ? 'active' : ''}`}
+          <Link href="/stats" className={`nav-item ${pathname === '/stats' ? 'active' : ''}`}>
+            <BarChart2 size={18} />
+            <span>Stats & Focus</span>
+          </Link>
+
+          <div className="nav-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Workspaces</span>
+            <button
+              className="add-btn"
+              style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer' }}
+              title="Create Workspace"
+              onClick={openCreate}
             >
-              {getIcon(ws.type)}
-              <span>{ws.name}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
+              <Plus size={14} />
+            </button>
+          </div>
 
-      <div className="sidebar-footer">
-        <PomodoroTimer />
-        <Link href="/settings" className="nav-item" style={{marginTop: '0.5rem'}}>
-          <Settings size={18} />
-          <span>Settings</span>
-        </Link>
-      </div>
-    </aside>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {workspaces?.map(ws => (
+              <div key={ws.id} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Link
+                  href={`/workspace/${ws.id}`}
+                  className={`nav-item ${pathname === `/workspace/${ws.id}` ? 'active' : ''}`}
+                  style={{ flex: 1 }}
+                >
+                  {ws.icon && ws.icon !== 'folder' ? (
+                    <span style={{ fontSize: '1rem' }}>{ws.icon}</span>
+                  ) : getIcon(ws.type)}
+                  <span>{ws.name}</span>
+                </Link>
+                <button
+                  onClick={(e) => openEdit(ws, e)}
+                  title="Edit workspace"
+                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem 0.3rem', borderRadius: '4px', opacity: 0.6 }}
+                  className="ws-edit-btn"
+                >
+                  ···
+                </button>
+              </div>
+            ))}
+          </div>
+        </nav>
+
+        <div className="sidebar-footer">
+          <PomodoroTimer />
+          <ThemeToggle />
+          <Link href="/settings" className="nav-item" style={{ marginTop: '0.5rem' }}>
+            <Settings size={18} />
+            <span>Settings</span>
+          </Link>
+        </div>
+      </aside>
+
+      {modalOpen && (
+        <WorkspaceModal
+          workspace={editingWs}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+    </>
   );
 }

@@ -34,8 +34,6 @@ export function KanbanBoard({
     [workspaceId]
   );
   
-  console.log('KanbanBoard allTasks:', allTasks?.map(t => ({ id: t.id, title: t.title, parent: t.parentTaskId, workspaceId: t.workspaceId })));
-
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
     

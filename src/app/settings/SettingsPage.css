@@ -1,0 +1,126 @@
+.settings-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.settings-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.settings-subtitle {
+  color: var(--text-secondary);
+  margin: 0 0 2rem;
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.settings-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-section h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.settings-row > div strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.settings-row > div p {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin: 0.15rem 0 0;
+}
+
+.settings-select,
+.settings-input {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+  min-width: 200px;
+}
+
+.settings-input:focus,
+.settings-select:focus {
+  border-color: var(--accent-cyan);
+}
+
+.settings-btn {
+  padding: 0.45rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.settings-btn.primary {
+  background: var(--accent-cyan);
+  color: #000;
+}
+
+.settings-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.settings-hint {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.settings-hint.coming-soon {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.settings-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.settings-value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.settings-value code {
+  background: var(--bg-tertiary);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
