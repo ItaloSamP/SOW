@@ -1,5 +1,6 @@
+/* ── Layout ─────────────────────────────────────────────── */
 .workspace-container {
-  padding: 2rem;
+  padding: var(--space-8) var(--space-8) var(--space-4);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -8,100 +9,119 @@
 .workspace-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
+  gap: var(--space-4);
 }
 
 .workspace-title {
-  font-size: 2rem;
+  font-size: var(--text-2xl);
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
   text-transform: capitalize;
 }
 
 .workspace-subtitle {
-  color: var(--text-secondary);
-  font-size: 1rem;
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  margin-top: var(--space-1);
 }
 
+/* ── View toggle (pill style) ────────────────────────────── */
 .view-toggles {
   display: flex;
-  background-color: var(--bg-elevated);
-  padding: 0.25rem;
-  border-radius: 8px;
-  gap: 0.25rem;
+  background-color: var(--bg-tertiary);
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .toggle-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  color: var(--text-secondary);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
   font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: var(--text-base);
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
 }
 
-.toggle-btn:hover {
-  color: var(--text-primary);
-}
+.toggle-btn:hover { color: var(--text-secondary); }
 
 .toggle-btn.active {
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-elevated);
   color: var(--text-primary);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 }
 
+/* ── Toolbar ─────────────────────────────────────────────── */
 .workspace-toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  gap: 1rem;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
-.search-bar {
-  flex: 1;
-}
+.search-bar { flex: 1; }
 
 .search-bar input {
   width: 100%;
-  max-width: 400px;
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
+  max-width: 380px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-4);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 }
 
+.search-bar input::placeholder { color: var(--text-muted); }
+
 .search-bar input:focus {
-  border-color: var(--accent-cyan);
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-glow);
 }
 
 .new-task-btn {
-  background-color: var(--accent-cyan);
+  background-color: var(--accent);
   color: #000;
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-5);
   font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: filter 0.2s ease;
+  font-size: var(--text-base);
+  transition: opacity var(--dur-base) ease;
+  white-space: nowrap;
 }
 
-.new-task-btn:hover {
-  filter: brightness(1.1);
+.new-task-btn:hover { opacity: 0.85; }
+
+/* ── Title edit input ────────────────────────────────────── */
+.workspace-title-input {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: transparent;
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  outline: none;
+  padding: 0 var(--space-2);
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-glow);
 }
 
+/* ── Content area ────────────────────────────────────────── */
 .workspace-content {
   flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: var(--space-4);
+  min-height: 0;
 }
 
 .main-view {
@@ -109,17 +129,17 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: flex 0.3s ease;
+  min-width: 0;
 }
 
 .split-panel {
-  flex: 0 0 450px;
-  max-width: 50%;
-  border-radius: 12px;
+  flex: 0 0 440px;
+  max-width: 48%;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-default);
   background-color: var(--bg-secondary);
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-lg);
 }

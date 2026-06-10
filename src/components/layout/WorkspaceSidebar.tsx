@@ -6,7 +6,10 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useOrphanRepair } from '@/hooks/useOrphanRepair';
 import { db, type Workspace } from '@/db/dexie';
-import { LayoutDashboard, Briefcase, GraduationCap, User, Plus, Settings, BarChart2 } from 'lucide-react';
+import {
+  LayoutDashboard, Briefcase, GraduationCap, User,
+  Plus, Settings, BarChart2, MoreHorizontal,
+} from 'lucide-react';
 import { PomodoroTimer } from '@/components/productivity/PomodoroTimer';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { WorkspaceModal } from '@/components/workspace/WorkspaceModal';
@@ -30,10 +33,10 @@ export function WorkspaceSidebar() {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'work': return <Briefcase size={18} />;
-      case 'studies': return <GraduationCap size={18} />;
-      case 'personal': return <User size={18} />;
-      default: return <Briefcase size={18} />;
+      case 'work':     return <Briefcase size={16} />;
+      case 'studies':  return <GraduationCap size={16} />;
+      case 'personal': return <User size={16} />;
+      default:         return <Briefcase size={16} />;
     }
   };
 
@@ -41,52 +44,46 @@ export function WorkspaceSidebar() {
     <>
       <aside className="sidebar">
         <div className="sidebar-header">
-          <div className="logo">SOW</div>
+          <div className="logo">SO<span className="logo-accent">W</span></div>
         </div>
 
         <nav className="sidebar-nav">
           <Link href="/" className={`nav-item ${pathname === '/' ? 'active' : ''}`}>
-            <LayoutDashboard size={18} />
+            <LayoutDashboard size={16} />
             <span>Overview</span>
           </Link>
 
           <Link href="/stats" className={`nav-item ${pathname === '/stats' ? 'active' : ''}`}>
-            <BarChart2 size={18} />
+            <BarChart2 size={16} />
             <span>Stats & Focus</span>
           </Link>
 
-          <div className="nav-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="nav-section-title">
             <span>Workspaces</span>
-            <button
-              className="add-btn"
-              style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer' }}
-              title="Create Workspace"
-              onClick={openCreate}
-            >
-              <Plus size={14} />
+            <button className="add-workspace-btn" title="Create workspace" onClick={openCreate}>
+              <Plus size={13} />
             </button>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div className="ws-list">
             {workspaces?.map(ws => (
-              <div key={ws.id} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <div key={ws.id} className="ws-item-row">
                 <Link
                   href={`/workspace/${ws.id}`}
-                  className={`nav-item ${pathname === `/workspace/${ws.id}` ? 'active' : ''}`}
-                  style={{ flex: 1 }}
+                  className={`nav-item ws-link ${pathname === `/workspace/${ws.id}` ? 'active' : ''}`}
                 >
-                  {ws.icon && ws.icon !== 'folder' ? (
-                    <span style={{ fontSize: '1rem' }}>{ws.icon}</span>
-                  ) : getIcon(ws.type)}
+                  {ws.icon && ws.icon !== 'folder'
+                    ? <span className="ws-emoji">{ws.icon}</span>
+                    : getIcon(ws.type)
+                  }
                   <span>{ws.name}</span>
                 </Link>
                 <button
                   onClick={(e) => openEdit(ws, e)}
                   title="Edit workspace"
-                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem 0.3rem', borderRadius: '4px', opacity: 0.6 }}
                   className="ws-edit-btn"
                 >
-                  ···
+                  <MoreHorizontal size={14} />
                 </button>
               </div>
             ))}
@@ -96,18 +93,15 @@ export function WorkspaceSidebar() {
         <div className="sidebar-footer">
           <PomodoroTimer />
           <ThemeToggle />
-          <Link href="/settings" className="nav-item" style={{ marginTop: '0.5rem' }}>
-            <Settings size={18} />
+          <Link href="/settings" className={`nav-item ${pathname === '/settings' ? 'active' : ''}`}>
+            <Settings size={16} />
             <span>Settings</span>
           </Link>
         </div>
       </aside>
 
       {modalOpen && (
-        <WorkspaceModal
-          workspace={editingWs}
-          onClose={() => setModalOpen(false)}
-        />
+        <WorkspaceModal workspace={editingWs} onClose={() => setModalOpen(false)} />
       )}
     </>
   );

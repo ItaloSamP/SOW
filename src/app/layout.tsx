@@ -19,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" data-theme="dark">
       <body className={`${inter.variable} ${firaCode.variable}`}>
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+        <div className="app-layout">
           <WorkspaceSidebar />
-          <main style={{ flex: 1, overflowY: 'auto', backgroundColor: 'var(--bg-primary)' }}>
+          <main className="app-main">
             {children}
           </main>
         </div>

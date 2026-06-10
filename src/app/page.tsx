@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Task } from '@/db/dexie';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Calendar, Pin, PinOff } from 'lucide-react';
+import { Calendar, Pin, PinOff, Link2 } from 'lucide-react';
 import { TaskDetailPanel } from '@/components/tasks/TaskDetailPanel';
 import './OverviewPage.css';
 
@@ -118,7 +118,7 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
             style={{ marginTop: '0.25rem', width: 'fit-content' }}
           >
-            🔗 {link.title || link.url}
+            <Link2 size={11} /> {link.title || link.url}
           </a>
         ))}
       </div>
@@ -216,7 +216,7 @@ export default function Home() {
         <div className="overview-main-view">
           {pinnedTasks.length > 0 && (
             <div className="pinned-section">
-              <h2 className="section-title">📌 Pinned Tasks</h2>
+              <h2 className="section-title"><Pin size={14} /> Pinned Tasks</h2>
               <div className="tasks-grid">
                 {pinnedTasks.map(renderTaskCard)}
               </div>

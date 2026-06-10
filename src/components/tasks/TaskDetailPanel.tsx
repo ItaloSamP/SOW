@@ -208,7 +208,7 @@ export function TaskDetailPanel({
               -
             </button>
             <span className="pomo-count-display">
-              {task.pomodoroSessions || 0} 🍅
+              {task.pomodoroSessions || 0}
             </span>
             <button 
               className="pomo-adj-btn"
@@ -219,7 +219,7 @@ export function TaskDetailPanel({
           </div>
           <div className="pomodoro-visual-list">
             {Array.from({ length: task.pomodoroSessions || 0 }).map((_, i) => (
-              <span key={i} className="pomo-tomato">🍅</span>
+              <span key={i} className="pomo-pip" />
             ))}
           </div>
         </div>

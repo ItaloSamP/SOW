@@ -73,7 +73,7 @@ export default function WorkspacePage() {
               onChange={(e) => setEditedName(e.target.value)}
               onBlur={handleRenameWorkspace}
               onKeyDown={(e) => e.key === 'Enter' && handleRenameWorkspace()}
-              style={{ fontSize: '2rem', fontWeight: 'bold', background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-primary)', outline: 'none', borderRadius: '4px', padding: '0 0.5rem' }}
+              className="workspace-title-input"
             />
           ) : (
             <h1 

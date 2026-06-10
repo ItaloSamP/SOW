@@ -117,7 +117,7 @@ export function KanbanBoard({
                               className="task-card-pinned-link"
                               onClick={(e) => e.stopPropagation()} // Prevent opening task detail when clicking link
                             >
-                              🔗 {link.title || link.url}
+                              {link.title || link.url}
                             </a>
                           ))}
 

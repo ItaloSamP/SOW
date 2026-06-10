@@ -1,30 +1,29 @@
 .quick-add-form {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-3);
   align-items: center;
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s ease;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2);
+  margin-bottom: var(--space-4);
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 }
 
 .quick-add-form:focus-within {
-  border-color: var(--accent-cyan);
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-glow);
 }
 
 .input-wrapper {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding-left: 0.75rem;
+  gap: var(--space-3);
+  padding-left: var(--space-3);
 }
 
-.add-icon {
-  color: var(--text-muted);
-}
+.add-icon { color: var(--text-muted); }
 
 .quick-add-input {
   flex: 1;
@@ -32,29 +31,21 @@
   border: none;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: var(--text-base);
   outline: none;
 }
 
-.quick-add-input::placeholder {
-  color: var(--text-muted);
-}
+.quick-add-input::placeholder { color: var(--text-muted); }
 
 .quick-add-btn {
-  background-color: var(--accent-cyan);
+  background-color: var(--accent);
   color: #000;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  transition: opacity 0.2s ease;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+  transition: opacity var(--dur-base) ease;
 }
 
-.quick-add-btn:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.quick-add-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.quick-add-btn:hover:not(:disabled) { opacity: 0.85; }
+.quick-add-btn:disabled { opacity: 0.4; cursor: not-allowed; }

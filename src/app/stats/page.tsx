@@ -43,7 +43,7 @@ export default function StatsPage() {
           </div>
           <div className="metric-info">
             <h3>Focus Sessions</h3>
-            <p className="metric-value">{totalPomodoros} 🍅</p>
+            <p className="metric-value">{totalPomodoros}</p>
           </div>
         </div>
 
