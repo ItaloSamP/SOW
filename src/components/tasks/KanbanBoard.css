@@ -155,28 +155,20 @@
 
 /* ── Hover popover ───────────────────────────────────────── */
 .task-hover-popover {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
+  position: fixed;
   width: 240px;
   background-color: var(--bg-overlay);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-3);
   box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--dur-base) ease, transform var(--dur-base) var(--ease-out);
-  z-index: 100;
-  pointer-events: none;
+  z-index: 9999;
+  animation: popover-in var(--dur-base) var(--ease-out) both;
 }
 
-.task-card:hover .task-hover-popover {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(2px);
-  pointer-events: auto;
+@keyframes popover-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .popover-title {
