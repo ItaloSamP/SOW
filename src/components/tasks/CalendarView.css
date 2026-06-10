@@ -5,23 +5,40 @@
   overflow-y: auto;
 }
 
-.calendar-grid {
+/* ── Sticky header ───────────────────────────────────────── */
+.calendar-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
   background-color: var(--border-default);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
+  border-bottom: none;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   overflow: hidden;
 }
 
 .calendar-header-day {
   background-color: var(--bg-elevated);
-  padding: var(--space-4);
+  padding: var(--space-3) var(--space-2);
   text-align: center;
   font-weight: 600;
   font-size: var(--text-sm);
   color: var(--text-secondary);
+}
+
+/* ── Days grid ───────────────────────────────────────────── */
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background-color: var(--border-default);
+  border: 1px solid var(--border-default);
+  border-top: none;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  overflow: hidden;
 }
 
 .calendar-day {
