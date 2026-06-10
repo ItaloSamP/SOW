@@ -1,0 +1,132 @@
+.stats-container {
+  padding: var(--space-8);
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.stats-header { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.stats-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.stats-subtitle {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+}
+
+/* ── Metrics grid ────────────────────────────────────────── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.metric-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: border-color var(--dur-base) ease;
+}
+
+.metric-card:hover { border-color: var(--border-strong); }
+
+.metric-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-icon-wrapper.success  { background-color: var(--success-dim);  color: var(--success); }
+.metric-icon-wrapper.danger   { background-color: var(--danger-dim);   color: var(--danger); }
+.metric-icon-wrapper.primary  { background-color: var(--accent-dim);   color: var(--accent); }
+.metric-icon-wrapper.warning  { background-color: var(--warning-dim);  color: var(--warning); }
+
+.metric-info h3 {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.metric-value {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ── Charts section ──────────────────────────────────────── */
+.charts-section { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.chart-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+}
+
+.chart-card h3 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ── Bar chart ───────────────────────────────────────────── */
+.simple-bar-chart { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.bar-row { display: flex; align-items: center; gap: var(--space-4); }
+
+.bar-label {
+  width: 72px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background-color: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s var(--ease-out);
+}
+
+.bar-fill.priority-high   { background-color: var(--danger); }
+.bar-fill.priority-medium { background-color: var(--warning); }
+.bar-fill.priority-low    { background-color: var(--success); }
+
+.bar-count {
+  width: 28px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

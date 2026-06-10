@@ -1,0 +1,51 @@
+.quick-add-form {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2);
+  margin-bottom: var(--space-4);
+  transition: border-color var(--dur-base) ease, box-shadow var(--dur-base) ease;
+}
+
+.quick-add-form:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-glow);
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-left: var(--space-3);
+}
+
+.add-icon { color: var(--text-muted); }
+
+.quick-add-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  outline: none;
+}
+
+.quick-add-input::placeholder { color: var(--text-muted); }
+
+.quick-add-btn {
+  background-color: var(--accent);
+  color: #000;
+  font-weight: 600;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+  transition: opacity var(--dur-base) ease;
+}
+
+.quick-add-btn:hover:not(:disabled) { opacity: 0.85; }
+.quick-add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
