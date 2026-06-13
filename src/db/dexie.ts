@@ -16,11 +16,19 @@ export interface Workspace {
   columns?: WorkspaceColumn[];
 }
 
+export interface ScratchpadNote {
+  id: string;
+  content: string;
+  color: 'yellow' | 'green' | 'blue' | 'pink' | 'purple';
+  createdAt: string; // ISO
+}
+
 export interface Task {
   id?: number;
   workspaceId: string;
   title: string;
   description: string;
+  tiptapContent?: object; // TipTap JSON document (rich text)
   status: string;
   priority: 'low' | 'medium' | 'high';
   isPinned?: boolean;
@@ -33,6 +41,20 @@ export interface Task {
   parentTaskId?: number;
   relatedTaskIds: number[];
   gitHubIssueNumber?: number;
+  scratchpad?: ScratchpadNote[];
+  coverColor?: string;     // hex or CSS color token
+  coverGradient?: string;  // full CSS gradient string
+  taskIcon?: string;       // emoji character
+}
+
+export interface Attachment {
+  id?: number;
+  taskId: number;
+  name: string;
+  type: string;       // MIME type
+  size: number;       // bytes, after compression
+  blob: Blob;
+  createdAt: string;  // ISO
 }
 
 export interface FlashcardDeck {
@@ -74,6 +96,7 @@ const db = new Dexie('SOWDatabase') as Dexie & {
   flashcardDecks: EntityTable<FlashcardDeck, 'id'>;
   flashcards: EntityTable<Flashcard, 'id'>;
   periodicReports: EntityTable<PeriodicReport, 'id'>;
+  attachments: EntityTable<Attachment, 'id'>;
 };
 
 db.version(1).stores({
@@ -83,5 +106,38 @@ db.version(1).stores({
   flashcards: '++id, deckId, nextReviewDate',
   periodicReports: '++id, workspaceId, periodType, dateString'
 });
+
+// v2: rich text (tiptapContent), scratchpad notes, cover color/gradient and
+// emoji icon on Task. All non-indexed fields — same stores, version bump only.
+db.version(2).stores({
+  workspaces: '++id, name, type',
+  tasks: '++id, workspaceId, status, priority, dueDate, parentTaskId',
+  flashcardDecks: '++id, taskId, difficulty',
+  flashcards: '++id, deckId, nextReviewDate',
+  periodicReports: '++id, workspaceId, periodType, dateString'
+});
+
+// v3: local file attachments stored as Blobs.
+db.version(3).stores({
+  attachments: '++id, taskId'
+});
+
+/**
+ * Deletes a task with all its descendant subtasks (recursively) and the
+ * attachments of every deleted task. Prevents orphaned blobs in IndexedDB.
+ */
+export async function deleteTaskCascade(taskId: number): Promise<void> {
+  const idsToDelete: number[] = [taskId];
+  let frontier = [taskId];
+  while (frontier.length > 0) {
+    const children = await db.tasks.where('parentTaskId').anyOf(frontier).toArray();
+    frontier = children.map(c => c.id!).filter(Boolean);
+    idsToDelete.push(...frontier);
+  }
+  await db.transaction('rw', db.tasks, db.attachments, async () => {
+    await db.attachments.where('taskId').anyOf(idsToDelete).delete();
+    await db.tasks.bulkDelete(idsToDelete);
+  });
+}
 
 export { db };
