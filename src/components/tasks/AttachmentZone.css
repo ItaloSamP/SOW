@@ -1,0 +1,324 @@
+.attachment-zone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.attachment-zone-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+/* ── Drop zone ──────────────────────────────────────────── */
+
+.attachment-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-5) var(--space-4);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+.attachment-dropzone:hover,
+.attachment-dropzone:focus-visible {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+.attachment-dropzone--over {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.attachment-dropzone-hint {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.attachment-file-input {
+  display: none;
+}
+
+/* ── Error message ──────────────────────────────────────── */
+
+.attachment-error {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--danger-dim);
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+
+/* ── Image grid ─────────────────────────────────────────── */
+
+.attachment-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.attachment-image-item {
+  position: relative;
+  margin: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.attachment-image-thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.attachment-image-thumb:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.attachment-image-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.attachment-image-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+}
+
+.attachment-image-name {
+  font-size: var(--text-2xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachment-image-size {
+  flex-shrink: 0;
+  font-size: var(--text-2xs);
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+/* ── PDF list ───────────────────────────────────────────── */
+
+.attachment-pdf-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.attachment-pdf-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.attachment-pdf-item:hover {
+  border-color: var(--border-strong);
+}
+
+.attachment-pdf-icon {
+  flex-shrink: 0;
+  color: var(--danger);
+}
+
+.attachment-pdf-name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachment-pdf-size {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.attachment-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.attachment-download:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* ── Remove button (shared, shown on item hover) ────────── */
+
+.attachment-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg-overlay);
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.attachment-image-item .attachment-remove {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  box-shadow: var(--shadow-sm);
+}
+
+.attachment-image-item:hover .attachment-remove,
+.attachment-pdf-item:hover .attachment-remove,
+.attachment-remove:focus-visible {
+  opacity: 1;
+}
+
+.attachment-remove:hover {
+  background: var(--danger-dim);
+  color: var(--danger);
+}
+
+/* ── Lightbox ───────────────────────────────────────────── */
+
+.attachment-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  cursor: zoom-out;
+}
+
+.attachment-lightbox-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  max-width: 90vw;
+  max-height: 90vh;
+  cursor: default;
+}
+
+.attachment-lightbox-figure img {
+  display: block;
+  max-width: 90vw;
+  max-height: calc(90vh - 40px);
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.attachment-lightbox-caption {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  max-width: 90vw;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--text-sm);
+}
+
+.attachment-lightbox-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachment-lightbox-size {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.attachment-lightbox-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.attachment-lightbox-close:hover,
+.attachment-lightbox-close:focus-visible {
+  background: rgba(255, 255, 255, 0.25);
+  outline: none;
+}
