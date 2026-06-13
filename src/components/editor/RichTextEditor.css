@@ -1,0 +1,317 @@
+/* ── RichTextEditor ─────────────────────────────────────── */
+
+.rte {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Editable area (ProseMirror root) ───────────────────── */
+
+.rte .rte-content {
+  min-height: 120px;
+  padding: var(--space-2) var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--text-primary);
+  outline: none;
+  word-break: break-word;
+  white-space: pre-wrap;
+  caret-color: var(--accent);
+}
+
+.rte .rte-content > * + * {
+  margin-top: var(--space-2);
+}
+
+/* Placeholder-ish empty state cursor area keeps min height clickable */
+.rte .rte-content p {
+  margin: 0;
+}
+
+/* ── Headings ───────────────────────────────────────────── */
+
+.rte .rte-content h1 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: var(--space-4) 0 var(--space-1);
+}
+
+.rte .rte-content h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.35;
+  margin: var(--space-3) 0 var(--space-1);
+}
+
+.rte .rte-content h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.4;
+  margin: var(--space-3) 0 var(--space-1);
+}
+
+.rte .rte-content h1:first-child,
+.rte .rte-content h2:first-child,
+.rte .rte-content h3:first-child {
+  margin-top: 0;
+}
+
+/* ── Lists ──────────────────────────────────────────────── */
+
+.rte .rte-content ul,
+.rte .rte-content ol {
+  padding-left: var(--space-5);
+  margin: var(--space-1) 0;
+}
+
+.rte .rte-content li {
+  margin: var(--space-1) 0;
+}
+
+.rte .rte-content li p {
+  margin: 0;
+}
+
+.rte .rte-content ul li::marker {
+  color: var(--text-muted);
+}
+
+.rte .rte-content ol li::marker {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ── Blockquote ─────────────────────────────────────────── */
+
+.rte .rte-content blockquote {
+  margin: var(--space-2) 0;
+  padding: var(--space-1) var(--space-3);
+  border-left: 3px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+/* ── Horizontal rule ────────────────────────────────────── */
+
+.rte .rte-content hr {
+  border: none;
+  border-top: 1px solid var(--border-default);
+  margin: var(--space-4) 0;
+}
+
+.rte .rte-content hr.ProseMirror-selectednode {
+  border-top-color: var(--accent);
+}
+
+/* ── Inline code ────────────────────────────────────────── */
+
+.rte .rte-content code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+  color: var(--accent);
+}
+
+/* ── Code block (lowlight) ──────────────────────────────── */
+
+.rte .rte-content pre {
+  background: var(--bg-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-2) 0;
+  overflow-x: auto;
+}
+
+.rte .rte-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+/* lowlight (highlight.js) token colors */
+.rte .rte-content pre .hljs-comment,
+.rte .rte-content pre .hljs-quote {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.rte .rte-content pre .hljs-keyword,
+.rte .rte-content pre .hljs-selector-tag,
+.rte .rte-content pre .hljs-doctag,
+.rte .rte-content pre .hljs-meta {
+  color: #C792EA;
+}
+
+.rte .rte-content pre .hljs-string,
+.rte .rte-content pre .hljs-regexp,
+.rte .rte-content pre .hljs-addition {
+  color: #A5D6A7;
+}
+
+.rte .rte-content pre .hljs-number,
+.rte .rte-content pre .hljs-literal,
+.rte .rte-content pre .hljs-symbol,
+.rte .rte-content pre .hljs-bullet {
+  color: #F78C6C;
+}
+
+.rte .rte-content pre .hljs-title,
+.rte .rte-content pre .hljs-function .hljs-title,
+.rte .rte-content pre .hljs-section {
+  color: #82AAFF;
+}
+
+.rte .rte-content pre .hljs-type,
+.rte .rte-content pre .hljs-built_in,
+.rte .rte-content pre .hljs-class .hljs-title,
+.rte .rte-content pre .hljs-title.class_ {
+  color: #FFCB6B;
+}
+
+.rte .rte-content pre .hljs-attr,
+.rte .rte-content pre .hljs-attribute,
+.rte .rte-content pre .hljs-variable,
+.rte .rte-content pre .hljs-template-variable,
+.rte .rte-content pre .hljs-name {
+  color: #F07178;
+}
+
+.rte .rte-content pre .hljs-deletion {
+  color: var(--danger);
+}
+
+.rte .rte-content pre .hljs-emphasis {
+  font-style: italic;
+}
+
+.rte .rte-content pre .hljs-strong {
+  font-weight: 700;
+}
+
+/* ── Links ──────────────────────────────────────────────── */
+
+.rte .rte-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-dim);
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: text-decoration-color var(--dur-fast);
+}
+
+.rte .rte-content a:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* ── Text selection ─────────────────────────────────────── */
+
+.rte .rte-content ::selection {
+  background: var(--accent-dim);
+}
+
+/* ── Bubble menu ────────────────────────────────────────── */
+
+.rte-bubble {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-1);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.rte-bubble-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.rte-bubble-btn:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.rte-bubble-btn.is-active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.rte-bubble-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--border-strong);
+  margin: 0 var(--space-1);
+}
+
+/* ── Slash command menu ─────────────────────────────────── */
+
+.rte-slash {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: var(--space-1);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.rte-slash-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+.rte-slash-item.is-selected {
+  background: var(--bg-elevated);
+}
+
+.rte-slash-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.rte-slash-item.is-selected .rte-slash-icon {
+  color: var(--accent);
+}
