@@ -1,0 +1,118 @@
+/* ── Flashcards inline view ──────────────────────────────── */
+.flashcards-view {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.flashcards-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-8);
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  text-align: center;
+}
+
+.flashcards-empty-icon {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.flashcards-empty-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.flashcards-empty-hint {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.flashcards-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.flashcard-deck-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.deck-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.deck-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--text-base);
+}
+
+.deck-name svg { color: var(--accent); flex-shrink: 0; }
+
+.deck-task {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deck-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.deck-progress {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.deck-next-review {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.deck-open-btn {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.deck-open-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

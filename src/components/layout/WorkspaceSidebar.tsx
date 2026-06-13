@@ -31,6 +31,15 @@ export function WorkspaceSidebar() {
     setModalOpen(true);
   };
 
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'work':     return 'Work workspace';
+      case 'studies':  return 'Studies workspace';
+      case 'personal': return 'Personal workspace';
+      default:         return 'Workspace';
+    }
+  };
+
   const getIcon = (type: string) => {
     switch (type) {
       case 'work':     return <Briefcase size={16} />;
@@ -72,10 +81,12 @@ export function WorkspaceSidebar() {
                   href={`/workspace/${ws.id}`}
                   className={`nav-item ws-link ${pathname === `/workspace/${ws.id}` ? 'active' : ''}`}
                 >
-                  {ws.icon && ws.icon !== 'folder'
-                    ? <span className="ws-emoji">{ws.icon}</span>
-                    : getIcon(ws.type)
-                  }
+                  <span className="ws-type-icon" title={getTypeLabel(ws.type)}>
+                    {ws.icon && ws.icon !== 'folder'
+                      ? <span className="ws-emoji">{ws.icon}</span>
+                      : getIcon(ws.type)
+                    }
+                  </span>
                   <span>{ws.name}</span>
                 </Link>
                 <button

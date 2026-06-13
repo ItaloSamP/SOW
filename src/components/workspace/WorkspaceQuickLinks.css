@@ -1,0 +1,98 @@
+/* ── Workspace quick links (header pills) ────────────────── */
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.quick-links-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.quick-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 2px var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.quick-link-pill a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-link-pill a:hover { text-decoration: underline; }
+
+.quick-link-remove {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+  border-radius: 50%;
+  padding: 1px;
+}
+
+.quick-link-remove:hover { color: var(--text-primary); }
+
+.quick-links-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  transition: color var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+
+.quick-links-edit-btn:hover {
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+}
+
+.quick-links-edit-btn.active {
+  color: var(--accent);
+  background-color: var(--bg-tertiary);
+}
+
+.quick-links-form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.quick-links-form input {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  outline: none;
+  width: 110px;
+}
+
+.quick-links-form input:last-child { width: 180px; }
+
+.quick-links-form input::placeholder { color: var(--text-muted); }
+
+.quick-links-form input:focus {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-glow);
+}

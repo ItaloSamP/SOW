@@ -115,6 +115,13 @@
   white-space: nowrap;
 }
 
+.ws-type-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
 .ws-emoji {
   font-size: var(--text-base);
   line-height: 1;
