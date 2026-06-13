@@ -95,6 +95,12 @@
   filter: brightness(1.2);
 }
 
+.calendar-pill-icon {
+  font-size: var(--text-xs);
+  line-height: 1;
+  margin-right: 3px;
+}
+
 .priority-high   { border-left: 2px solid var(--danger); }
 .priority-medium { border-left: 2px solid var(--warning); }
 .priority-low    { border-left: 2px solid var(--success); }

@@ -108,6 +108,7 @@ export function CalendarView({
                               onClick={() => task.id && onTaskClick?.(task.id)}
                               style={{ ...provided.draggableProps.style }}
                             >
+                              {task.taskIcon && <span className="calendar-pill-icon">{task.taskIcon}</span>}
                               {task.title}
                             </div>
                           )}

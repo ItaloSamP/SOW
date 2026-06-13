@@ -97,7 +97,10 @@ export default function Home() {
       
       <div className="row-main-content">
         <div className="row-title-area">
-          <h3>{task.title}</h3>
+          <h3>
+            {task.taskIcon && <span className="row-task-icon">{task.taskIcon}</span>}
+            {task.title}
+          </h3>
           {task.tags && task.tags.length > 0 && (
             <div className="row-tags">
               {task.tags.map((tag, i) => (

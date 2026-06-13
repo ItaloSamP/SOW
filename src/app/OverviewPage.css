@@ -219,6 +219,12 @@
   text-overflow: ellipsis;
 }
 
+.row-task-icon {
+  font-size: var(--text-md);
+  line-height: 1;
+  margin-right: var(--space-1);
+}
+
 .row-desc {
   font-size: var(--text-sm);
   color: var(--text-muted);

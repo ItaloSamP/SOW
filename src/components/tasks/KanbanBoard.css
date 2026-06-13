@@ -95,6 +95,30 @@
   margin-bottom: var(--space-1);
 }
 
+.task-card-icon {
+  font-size: var(--text-md);
+  line-height: 1;
+  margin-right: var(--space-1);
+}
+
+.task-card-cover-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.task-card-attachments {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
 .task-desc {
   font-size: var(--text-sm);
   color: var(--text-muted);

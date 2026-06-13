@@ -3,6 +3,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Task } from '@/db/dexie';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { Paperclip } from 'lucide-react';
 import './KanbanBoard.css';
 import { useEffect, useRef, useState } from 'react';
 
@@ -29,6 +30,16 @@ export function KanbanBoard({
     () => db.tasks.where('workspaceId').equals(workspaceId).toArray(),
     [workspaceId]
   );
+
+  const attachmentCounts = useLiveQuery(async () => {
+    const keys = await db.attachments.orderBy('taskId').keys();
+    const counts = new Map<number, number>();
+    for (const key of keys) {
+      const taskId = key as number;
+      counts.set(taskId, (counts.get(taskId) || 0) + 1);
+    }
+    return counts;
+  }, []);
 
   const [hoveredTask, setHoveredTask] = useState<Task | null>(null);
   const [hoverAnchor, setHoverAnchor] = useState<{ x: number; y: number } | null>(null);
@@ -113,13 +124,25 @@ export function KanbanBoard({
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             className={`task-card ${snapshot.isDragging ? 'dragging' : ''} priority-${task.priority}`}
-                            style={{ ...provided.draggableProps.style }}
+                            style={{
+                              ...provided.draggableProps.style,
+                              ...(!task.coverGradient && task.coverColor ? { borderTop: `2px solid ${task.coverColor}` } : {})
+                            }}
                             onClick={() => task.id && onTaskClick?.(task.id)}
                             onMouseEnter={(e) => handleCardMouseEnter(e, task)}
                             onMouseLeave={handleCardMouseLeave}
                           >
+                            {task.coverGradient && (
+                              <div
+                                className="task-card-cover-strip"
+                                style={{ background: task.coverGradient }}
+                              />
+                            )}
                             <div className="task-header">
-                              <h4>{task.title}</h4>
+                              <h4>
+                                {task.taskIcon && <span className="task-card-icon">{task.taskIcon}</span>}
+                                {task.title}
+                              </h4>
                             </div>
                             {task.description && <p className="task-desc">{task.description}</p>}
 
@@ -142,6 +165,12 @@ export function KanbanBoard({
                                   <span key={i} className="task-card-tag">{tag}</span>
                                 ))}
                               </div>
+                            )}
+
+                            {(attachmentCounts?.get(task.id!) ?? 0) > 0 && (
+                              <span className="task-card-attachments">
+                                <Paperclip size={12} /> {attachmentCounts!.get(task.id!)}
+                              </span>
                             )}
                           </div>
                         )}
