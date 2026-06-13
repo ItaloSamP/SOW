@@ -1,9 +1,14 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, type Task } from '@/db/dexie';
+import { db, deleteTaskCascade, type Task } from '@/db/dexie';
 import { useState, useEffect } from 'react';
 import { X, Check, Plus, Trash2, Calendar, Tag, PlayCircle, BookOpen, Briefcase } from 'lucide-react';
+import { TaskCover } from '@/components/tasks/TaskCover';
+import { TaskEmojiIcon } from '@/components/tasks/EmojiPicker';
+import { Scratchpad } from '@/components/tasks/Scratchpad';
+import { AttachmentZone } from '@/components/tasks/AttachmentZone';
+import { RichTextEditor } from '@/components/editor/RichTextEditor';
 import './TaskDetailPanel.css';
 
 import { ChevronRight } from 'lucide-react';
@@ -24,7 +29,6 @@ export function TaskDetailPanel({
   
   // Local states for fast typing before saving to DB
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [newSubtask, setNewSubtask] = useState('');
   const [tagsInput, setTagsInput] = useState('');
   const [embedInput, setEmbedInput] = useState('');
@@ -34,7 +38,6 @@ export function TaskDetailPanel({
   useEffect(() => {
     if (task) {
       setTitle(task.title);
-      setDescription(task.description);
       setTagsInput(task.tags?.join(', ') || '');
       setEmbedInput(task.embedUrl || '');
     }
@@ -90,7 +93,7 @@ export function TaskDetailPanel({
 
   const deleteSubtask = async (subId: number) => {
     if (confirm('Delete this subtask?')) {
-      await db.tasks.delete(subId);
+      await deleteTaskCascade(subId);
     }
   };
 
@@ -100,13 +103,14 @@ export function TaskDetailPanel({
 
   return (
     <div className="task-detail-panel">
+      <TaskCover task={task} />
       {parentTask && (
         <div className="task-breadcrumbs">
           <button className="breadcrumb-link" onClick={() => onNavigate?.(parentTask.id!)}>
-            {parentTask.title}
+            {parentTask.taskIcon ? `${parentTask.taskIcon} ` : ''}{parentTask.title}
           </button>
           <ChevronRight size={14} className="breadcrumb-sep" />
-          <span className="breadcrumb-current">{task.title}</span>
+          <span className="breadcrumb-current">{task.taskIcon ? `${task.taskIcon} ` : ''}{task.title}</span>
         </div>
       )}
       
@@ -138,8 +142,8 @@ export function TaskDetailPanel({
               className="action-icon-btn delete-task-btn" 
               title="Delete Task"
               onClick={async () => {
-                if (confirm('Are you sure you want to delete this task?')) {
-                  await db.tasks.delete(taskId);
+                if (confirm('Are you sure you want to delete this task? Subtasks and attachments will be deleted too.')) {
+                  await deleteTaskCascade(taskId);
                   onClose();
                 }
               }}
@@ -152,13 +156,16 @@ export function TaskDetailPanel({
       </header>
 
       <div className="panel-content">
-        <input 
-          className="task-title-input" 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={() => handleUpdate({ title })}
-          placeholder="Task title..."
-        />
+        <div className="task-title-row">
+          <TaskEmojiIcon task={task} />
+          <input
+            className="task-title-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={() => handleUpdate({ title })}
+            placeholder="Task title..."
+          />
+        </div>
 
         <div className="task-meta-grid">
           <div className="meta-item workspace-picker-wrapper">
@@ -225,14 +232,19 @@ export function TaskDetailPanel({
         </div>
 
         <div className="task-section">
-          <h3>Description (Rich Text Base)</h3>
-          <textarea 
-            className="task-description-editor"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            onBlur={() => handleUpdate({ description })}
-            placeholder="Start writing... (Type [[ to link tasks)"
+          <h3>Description</h3>
+          <RichTextEditor
+            key={taskId}
+            content={task.tiptapContent}
+            fallbackText={task.description}
+            onSave={(json, plainText) => handleUpdate({ tiptapContent: json, description: plainText })}
+            taskId={taskId}
+            onNavigateTask={onNavigate}
           />
+        </div>
+
+        <div className="task-section scratchpad-section">
+          <Scratchpad taskId={taskId} />
         </div>
 
         <div className="task-section subtasks-section">
@@ -246,7 +258,8 @@ export function TaskDetailPanel({
                 <button className="subtask-check" onClick={() => toggleSubtask(sub)}>
                   {sub.status === 'done' && <Check size={14} />}
                 </button>
-                <input 
+                {sub.taskIcon && <span className="subtask-icon">{sub.taskIcon}</span>}
+                <input
                   className={`subtask-title-input ${sub.status === 'done' ? 'completed' : ''}`}
                   value={sub.title}
                   onChange={(e) => updateSubtaskTitle(sub.id!, e.target.value)}
@@ -361,6 +374,10 @@ export function TaskDetailPanel({
               <p>Paste a link above to watch in Split-Screen</p>
             </div>
           )}
+        </div>
+
+        <div className="task-section attachments-section">
+          <AttachmentZone taskId={taskId} />
         </div>
 
       </div>

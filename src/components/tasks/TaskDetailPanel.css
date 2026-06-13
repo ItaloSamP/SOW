@@ -461,3 +461,20 @@
 .link-actions button:hover { color: var(--text-primary); background-color: var(--bg-elevated); }
 .delete-link-btn:hover     { color: var(--danger) !important; }
 .pin-btn.active            { color: var(--warning); }
+
+/* Title row: emoji icon + title input side by side */
+.task-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-title-row .task-title-input {
+  flex: 1;
+}
+
+.subtask-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
+}

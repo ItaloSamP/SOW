@@ -1,0 +1,133 @@
+/* ── Cover block ─────────────────────────────────────────── */
+.task-cover-wrapper {
+  position: relative;
+}
+
+.task-cover {
+  position: relative;
+  height: 80px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+}
+
+.task-cover.no-cover {
+  height: 36px;
+  background-color: transparent;
+}
+
+/* ── Hover buttons ───────────────────────────────────────── */
+.task-cover-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-secondary);
+  background-color: var(--bg-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-base) ease, color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease;
+}
+
+.task-cover:hover .task-cover-btn,
+.task-cover-btn:focus-visible {
+  opacity: 1;
+}
+
+.task-cover-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+/* ── Inline palette ──────────────────────────────────────── */
+.cover-palette {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  right: var(--space-2);
+  z-index: 50;
+  width: 232px;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-lg);
+  animation: cover-palette-in var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes cover-palette-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cover-palette-label {
+  display: block;
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.cover-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.cover-swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  padding: 0;
+  transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.cover-swatch:hover {
+  transform: scale(1.12);
+  box-shadow: var(--shadow-sm);
+}
+
+.cover-swatch.selected {
+  box-shadow: var(--shadow-glow);
+  border-color: var(--border-focus);
+}
+
+.cover-palette-grid.gradients .cover-swatch {
+  aspect-ratio: 1.6;
+}
+
+.cover-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
+}
+
+.cover-remove-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background-color: var(--danger-dim);
+}
